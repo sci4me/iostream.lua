@@ -20,9 +20,9 @@ function BufferedOutputStream:initialize(stream, bufferSize)
 end
 
 function BufferedOutputStream:writeU8(x)
-    if self.index == self.bufferSize then
-        self:flush()
-    end
+    if type(x) ~= "number" then error("expected number, got " .. type(x)) end
+    if x < 0 or x > 255 or (x % 1 ~= 0) then error("expected an unsigned byte, got " .. tostring(x)) end
+    if self.index == self.bufferSize then self:flush() end
     self.buffer[self.index] = x
     self.index = index + 1
 end

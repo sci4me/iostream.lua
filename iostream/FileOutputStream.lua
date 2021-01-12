@@ -9,6 +9,8 @@ function FileOutputStream:initialize(path)
 end
 
 function FileOutputStream:writeU8(x)
+    if type(x) ~= "number" then error("expected number, got " .. type(x)) end
+    if x < 0 or x > 255 or (x % 1 ~= 0) then error("expected an unsigned byte, got " .. tostring(x)) end
     self.fh:write(char(x))
 end
 

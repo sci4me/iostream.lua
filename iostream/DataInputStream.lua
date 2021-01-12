@@ -9,4 +9,8 @@ end
 
 -- TODO
 
+function DataInputStream:close()
+    self.stream:close()
+end
+
 return DataInputStream

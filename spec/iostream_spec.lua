@@ -1,3 +1,8 @@
+local char      = string.char
+local byte      = string.byte
+local substr    = string.sub
+local strlen    = string.len
+
 describe("iostream.lua", function()
     local iostream
     local InputStream
@@ -30,6 +35,58 @@ describe("iostream.lua", function()
     end)
 
     describe("StringInputStream", function()
+        it("works", function()
+            local str = "foobar123"
         
+            local s = StringInputStream(str)
+
+            for i = 1, strlen(str) do
+                assert(s:readU8() == byte(substr(str, i, i)))
+            end
+            assert(s:readU8() == nil)
+        end)
+    end)
+
+    describe("StringOutputStream", function()
+        it("works", function()
+            local s = StringOutputStream()
+
+            local str = "foobar123"
+            for i = 1, strlen(str) do
+                s:writeU8(byte(substr(str, i, i)))
+            end
+
+            assert(s:toString() == str)
+        end)
+    end)
+
+    describe("ByteArrayInputStream", function()
+        it("works", function()
+            local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
+
+            local s = ByteArrayInputStream(data)
+
+            for i = 1, #data do
+                assert(s:readU8() == data[i])
+            end
+        end)
+    end)
+
+    describe("ByteArrayOutputStream", function()            
+        it("works", function()
+            local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
+        
+            local s = ByteArrayOutputStream(data)
+            
+            for i = 1, #data do
+                s:writeU8(data[i])
+            end
+
+            local r = s:toByteArray()
+            assert(#r == #data)
+            for i = 1, #r do
+                assert(r[i] == data[i])
+            end
+        end)
     end)
 end)
