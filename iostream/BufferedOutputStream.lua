@@ -25,7 +25,6 @@ function BufferedOutputStream:writeU8(x)
     end
     self.buffer[self.index] = x
     self.index = index + 1
-    super:writeU8(x)
 end
 
 function BufferedOutputStream:flush()
@@ -33,6 +32,11 @@ function BufferedOutputStream:flush()
         self.class.super.writeU8(self, self.buffer[i])
     end
     self.index = 0
+end
+
+function BufferedOutputStream:close()
+    self:flush()
+    self.class.super.close(self)
 end
 
 return BufferedOutputStream
