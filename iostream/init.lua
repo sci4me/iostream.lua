@@ -1,5 +1,5 @@
 return setmetatable({
-    _DESCRIPTION    = "",
+    _DESCRIPTION    = "A simple input/output stream framework based on java.io",
     _URL            = "https://github.com/sci4me/iostream.lua",
     _VERSION        = "iostream.lua 0.1.0",
     _LICENSE        = [[
@@ -34,7 +34,9 @@ return setmetatable({
     FileInputStream         = require "iostream.FileInputStream",
     FileOutputStream        = require "iostream.FileOutputStream",
     BufferedInputStream     = require "iostream.BufferedInputStream",
-    BufferedOutputStream    = require "iostream.BufferedOutputStream"
+    BufferedOutputStream    = require "iostream.BufferedOutputStream",
+    DataInputStream         = require "iostream.DataInputStream",
+    DataOutputStream        = require "iostream.DataOutputStream"
 }, {
     __newindex = function(t, k, v)
         error("cannot modify read-only table")
