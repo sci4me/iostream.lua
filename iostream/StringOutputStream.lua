@@ -1,3 +1,8 @@
+--- @module StringOutputStream
+-- @author sci4me
+-- @license MIT
+-- @copyright Scitoshi Nakayobro 2021
+
 local class         = require "middleclass"
 local OutputStream  = require "iostream.OutputStream"
 local char          = string.char
@@ -15,11 +20,13 @@ function StringOutputStream:writeU8(x)
     self.buffer[#self.buffer + 1] = char(x)
 end
 
+-- luacheck: push no unused args
 function StringOutputStream:flush()
 end
 
 function StringOutputStream:close()
 end
+-- luacheck: pop
 
 function StringOutputStream:toString()
     return concat(self.buffer)

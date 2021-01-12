@@ -27,7 +27,19 @@ dependencies = {
 build = {
     type = "builtin",
     modules = {
-        ["iostream"] = " iostream/init.lua"
+        ["iostream"] = " iostream/init.lua",
+        ["iostream.InputStream"] = "iostream/InputStream.lua",
+        ["iostream.OutputStream"] = "iostream/OutputStream.lua",
+        ["iostream.StringInputStream"] = "iostream/StringInputStream.lua",
+        ["iostream.StringOutputStream"] = "iostream/StringOutputStream.lua",
+        ["iostream.ByteArrayInputStream"] = "iostream/ByteArrayInputStream.lua",
+        ["iostream.ByteArrayOutputStream"] = "iostream/ByteArrayOutputStream.lua",
+        ["iostream.FileInputStream"] = "iostream/FileInputStream.lua",
+        ["iostream.FileOutputStream"] = "iostream/FileOutputStream.lua",
+        ["iostream.BufferedInputStream"] = "iostream/BufferedInputStream.lua",
+        ["iostream.BufferedOutputStream"] = "iostream/BufferedOutputStream.lua",
+        ["iostream.DataInputStream"] = "iostream/DataInputStream.lua",
+        ["iostream.DataOutputStream"] = "iostream/DataOutputStream.lua"
     },
     copy_directories = {
         "docs",

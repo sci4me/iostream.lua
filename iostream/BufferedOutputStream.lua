@@ -1,3 +1,8 @@
+--- @module BufferedOutputStream
+-- @author sci4me
+-- @license MIT
+-- @copyright Scitoshi Nakayobro 2021
+
 local class         = require "middleclass"
 local OutputStream  = require "iostream.OutputStream"
 
@@ -24,7 +29,7 @@ function BufferedOutputStream:writeU8(x)
     if x < 0 or x > 255 or (x % 1 ~= 0) then error("expected an unsigned byte, got " .. tostring(x)) end
     if self.index == self.bufferSize then self:flush() end
     self.buffer[self.index] = x
-    self.index = index + 1
+    self.index = self.index + 1
 end
 
 function BufferedOutputStream:flush()

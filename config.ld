@@ -1,0 +1,9 @@
+project = "iostream.lua"
+description = "A simple input/output stream framework based on java.io"
+title = "iostream.lua documentation"
+dir = "docs"
+style = true
+examples = { "./spec/iostream_spec.lua" }
+format = "discount"
+file = "./iostream"
+readme = "README.md"

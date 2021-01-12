@@ -1,3 +1,8 @@
+--- @module FileOutputStream
+-- @author sci4me
+-- @license MIT
+-- @copyright Scitoshi Nakayobro 2021
+
 local class         = require "middleclass"
 local OutputStream  = require "iostream.OutputStream"
 local char          = string.char

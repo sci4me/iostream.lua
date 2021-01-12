@@ -1,3 +1,8 @@
+--- @module iostream
+-- @author sci4me
+-- @license MIT
+-- @copyright Scitoshi Nakayobro 2021
+
 return setmetatable({
     _DESCRIPTION    = "A simple input/output stream framework based on java.io",
     _URL            = "https://github.com/sci4me/iostream.lua",
@@ -38,8 +43,10 @@ return setmetatable({
     DataInputStream         = require "iostream.DataInputStream",
     DataOutputStream        = require "iostream.DataOutputStream"
 }, {
+    -- luacheck: push no unused args
     __newindex = function(t, k, v)
         error("cannot modify read-only table")
     end,
+    --luacheck: pop
     __metatable = false
 })

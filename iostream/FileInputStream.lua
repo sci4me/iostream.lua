@@ -1,3 +1,8 @@
+--- @module FileInputStream
+-- @author sci4me
+-- @license MIT
+-- @copyright Scitoshi Nakayobro 2021
+
 local class         = require "middleclass"
 local InputStream   = require "iostream.InputStream"
 local byte          = string.byte

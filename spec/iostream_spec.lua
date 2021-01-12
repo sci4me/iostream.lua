@@ -1,10 +1,12 @@
+-- luacheck: push no unused
+
 local assert    = require "luassert"
 local char      = string.char
 local byte      = string.byte
 local substr    = string.sub
 local strlen    = string.len
 
-local path_separator    = substr(package.config, 1, 1) 
+local path_separator    = substr(package.config, 1, 1)
 local is_windows        = path_separator == '\\'
 
 describe("iostream.lua", function()
@@ -95,7 +97,7 @@ describe("iostream.lua", function()
         end)
     end)
 
-    describe("ByteArrayOutputStream", function()            
+    describe("ByteArrayOutputStream", function()
         it("works", function()
             local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
         
@@ -152,3 +154,5 @@ describe("iostream.lua", function()
         end)
     end)
 end)
+
+-- luacheck: pop
