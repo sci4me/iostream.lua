@@ -4,6 +4,9 @@ local byte      = string.byte
 local substr    = string.sub
 local strlen    = string.len
 
+local path_separator    = substr(package.config, 1, 1) 
+local is_windows        = path_separator == '\\'
+
 describe("iostream.lua", function()
     local iostream
     local InputStream
@@ -18,6 +21,23 @@ describe("iostream.lua", function()
     local BufferedOutputStream
     local DataInputStream
     local DataOutputStream
+
+    local to_be_deleted = {}
+
+    teardown(function()
+        for i = 1, #to_be_deleted do
+            os.remove(to_be_deleted[i])
+        end
+    end)
+
+    local function tmpname()
+        local path = os.tmpname()
+        if is_windows and not path:find(':') then
+            path = os.getenv("TEMP") .. path
+        end
+        to_be_deleted[#to_be_deleted + 1] = path
+        return path
+    end
 
     it("loads", function()
         iostream = require "iostream"
@@ -50,9 +70,10 @@ describe("iostream.lua", function()
 
     describe("StringOutputStream", function()
         it("works", function()
+            local str = "foobar123"
+            
             local s = StringOutputStream()
 
-            local str = "foobar123"
             for i = 1, strlen(str) do
                 s:writeU8(byte(substr(str, i, i)))
             end
@@ -89,6 +110,45 @@ describe("iostream.lua", function()
             for i = 1, #r do
                 assert.are.equal(r[i], data[i])
             end
+        end)
+    end)
+
+    describe("FileInputStream", function()
+        local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
+        local path = tmpname()
+        
+        local fh = io.open(path, "wb")
+        for i = 1, #data do
+            fh:write(char(data[i]))
+        end
+        fh:close()
+
+        local s = FileInputStream(path)
+
+        for i = 1, #data do
+            assert.are.equal(s:readU8(), data[i])
+        end
+        assert.are.equal(s:readU8(), nil)
+        s:close()
+    end)
+
+    describe("FileOutputStream", function()
+        it("works", function()
+            local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
+            local path = tmpname()
+
+            local s = FileOutputStream(path)
+
+            for i = 1, #data do
+                s:writeU8(data[i])
+            end
+            s:close()
+
+            local fh = io.open(path, "rb")
+            for i = 1, #data do
+                assert.are.equal(byte(fh:read(1)), data[i])
+            end
+            fh:close()
         end)
     end)
 end)

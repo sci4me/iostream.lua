@@ -10,7 +10,9 @@ function FileInputStream:initialize(path)
 end
 
 function FileInputStream:readU8()
-    return byte(self.fh:read(1))
+    local x = self.fh:read(1)
+    if x == nil then return x end
+    return byte(x)
 end
 
 function FileInputStream:close()
