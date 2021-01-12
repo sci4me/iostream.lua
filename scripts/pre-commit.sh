@@ -1,5 +1,5 @@
 #!/bin/bash
-luacheck iostream
+luacheck .
 STATUS=$?
 [ $STATUS -ne 0 ] && exit 1
 
