@@ -27,7 +27,7 @@ dependencies = {
 build = {
     type = "builtin",
     modules = {
-        ["iostream"] = "src/iostream/init.lua"
+        ["iostream"] = " iostream/init.lua"
     },
     copy_directories = {
         "docs",
