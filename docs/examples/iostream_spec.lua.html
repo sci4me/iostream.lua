@@ -99,15 +99,15 @@ describe("iostream.lua", function()
 
     local function tmpname()
         local path = os.tmpname()
-        if is_windows and not path:find('</span>:') <span class="keyword">then</span>
-            path = <span class="global">os</span>.getenv(<span class="string">"TEMP"</span>) .. path
-        <span class="keyword">end</span>
-        to_be_deleted[#to_be_deleted + <span class="number">1</span>] = path
-        <span class="keyword">return</span> path
-    <span class="keyword">end</span>
+        if is_windows and not path:find('</span>:<span class="string">') then
+            path = os.getenv("TEMP") .. path
+        end
+        to_be_deleted[#to_be_deleted + 1] = path
+        return path
+    end
 
-    it(<span class="string">"loads"</span>, <span class="keyword">function</span>()
-        iostream = <span class="global">require</span> <span class="string">"iostream"</span>
+    it("loads", function()
+        iostream = require "iostream"
         InputStream = iostream.InputStream
         OutputStream = iostream.OutputStream
         StringInputStream = iostream.StringInputStream
@@ -120,102 +120,141 @@ describe("iostream.lua", function()
         BufferedOutputStream = iostream.BufferedOutputStream
         DataInputStream = iostream.DataInputStream
         DataOutputStream = iostream.DataOutputStream
-    <span class="keyword">end</span>)
+    end)
 
-    describe(<span class="string">"StringInputStream"</span>, <span class="keyword">function</span>()
-        it(<span class="string">"works"</span>, <span class="keyword">function</span>()
-            <span class="keyword">local</span> str = <span class="string">"foobar123"</span>
+    describe("StringInputStream", function()
+        it("works", function()
+            local str = "foobar123"
 
-            <span class="keyword">local</span> s = StringInputStream(str)
+            local s = StringInputStream(str)
 
-            <span class="keyword">for</span> i = <span class="number">1</span>, strlen(str) <span class="keyword">do</span>
-                <span class="global">assert</span>.are.equal(s:readU8(), byte(substr(str, i, i)))
-            <span class="keyword">end</span>
-            <span class="global">assert</span>.are.equal(s:readU8(), <span class="keyword">nil</span>)
-        <span class="keyword">end</span>)
-    <span class="keyword">end</span>)
+            for i = 1, strlen(str) do
+                assert.are.equal(byte(substr(str, i, i)), s:readU8())
+            end
+            assert.are.equal(nil, s:readU8())
+        end)
+    end)
 
-    describe(<span class="string">"StringOutputStream"</span>, <span class="keyword">function</span>()
-        it(<span class="string">"works"</span>, <span class="keyword">function</span>()
-            <span class="keyword">local</span> str = <span class="string">"foobar123"</span>
+    describe("StringOutputStream", function()
+        it("works", function()
+            local str = "foobar123"
 
-            <span class="keyword">local</span> s = StringOutputStream()
+            local s = StringOutputStream()
 
-            <span class="keyword">for</span> i = <span class="number">1</span>, strlen(str) <span class="keyword">do</span>
+            for i = 1, strlen(str) do
                 s:writeU8(byte(substr(str, i, i)))
-            <span class="keyword">end</span>
+            end
 
-            <span class="global">assert</span>.are.equal(s:toString(), str)
-        <span class="keyword">end</span>)
-    <span class="keyword">end</span>)
+            assert.are.equal(str, s:toString())
+        end)
+    end)
 
-    describe(<span class="string">"ByteArrayInputStream"</span>, <span class="keyword">function</span>()
-        it(<span class="string">"works"</span>, <span class="keyword">function</span>()
-            <span class="keyword">local</span> data = { <span class="number">0</span>, <span class="number">1</span>, <span class="number">250</span>, <span class="number">170</span>, <span class="number">66</span>, <span class="number">92</span>, <span class="number">255</span>, <span class="number">42</span> }
+    describe("ByteArrayInputStream", function()
+        it("works", function()
+            local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
 
-            <span class="keyword">local</span> s = ByteArrayInputStream(data)
+            local s = ByteArrayInputStream(data)
 
-            <span class="keyword">for</span> i = <span class="number">1</span>, #data <span class="keyword">do</span>
-                <span class="global">assert</span>.are.equal(s:readU8(), data[i])
-            <span class="keyword">end</span>
-            <span class="global">assert</span>.are.equal(s:readU8(), <span class="keyword">nil</span>)
-        <span class="keyword">end</span>)
-    <span class="keyword">end</span>)
+            for i = 1, #data do
+                assert.are.equal(data[i], s:readU8())
+            end
+            assert.are.equal(nil, s:readU8())
+        end)
+    end)
 
-    describe(<span class="string">"ByteArrayOutputStream"</span>, <span class="keyword">function</span>()
-        it(<span class="string">"works"</span>, <span class="keyword">function</span>()
-            <span class="keyword">local</span> data = { <span class="number">0</span>, <span class="number">1</span>, <span class="number">250</span>, <span class="number">170</span>, <span class="number">66</span>, <span class="number">92</span>, <span class="number">255</span>, <span class="number">42</span> }
+    describe("ByteArrayOutputStream", function()
+        it("works", function()
+            local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
 
-            <span class="keyword">local</span> s = ByteArrayOutputStream(data)
+            local s = ByteArrayOutputStream(data)
 
-            <span class="keyword">for</span> i = <span class="number">1</span>, #data <span class="keyword">do</span>
+            for i = 1, #data do
                 s:writeU8(data[i])
-            <span class="keyword">end</span>
+            end
 
-            <span class="keyword">local</span> r = s:toByteArray()
-            <span class="global">assert</span>.are.equal(#r, #data)
-            <span class="keyword">for</span> i = <span class="number">1</span>, #r <span class="keyword">do</span>
-                <span class="global">assert</span>.are.equal(r[i], data[i])
-            <span class="keyword">end</span>
-        <span class="keyword">end</span>)
-    <span class="keyword">end</span>)
+            local r = s:toByteArray()
+            assert.are.equal(#data, #r)
+            for i = 1, #r do
+                assert.are.equal(data[i], r[i])
+            end
+        end)
+    end)
 
-    describe(<span class="string">"FileInputStream"</span>, <span class="keyword">function</span>()
-        <span class="keyword">local</span> data = { <span class="number">0</span>, <span class="number">1</span>, <span class="number">250</span>, <span class="number">170</span>, <span class="number">66</span>, <span class="number">92</span>, <span class="number">255</span>, <span class="number">42</span> }
-        <span class="keyword">local</span> path = tmpname()
+    describe("FileInputStream", function()
+        local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
+        local path = tmpname()
 
-        <span class="keyword">local</span> fh = <span class="global">io</span>.open(path, <span class="string">"wb"</span>)
-        <span class="keyword">for</span> i = <span class="number">1</span>, #data <span class="keyword">do</span>
+        local fh = io.open(path, "wb")
+        for i = 1, #data do
             fh:write(char(data[i]))
-        <span class="keyword">end</span>
+        end
         fh:close()
 
-        <span class="keyword">local</span> s = FileInputStream(path)
+        local s = FileInputStream(path)
 
-        <span class="keyword">for</span> i = <span class="number">1</span>, #data <span class="keyword">do</span>
-            <span class="global">assert</span>.are.equal(s:readU8(), data[i])
-        <span class="keyword">end</span>
-        <span class="global">assert</span>.are.equal(s:readU8(), <span class="keyword">nil</span>)
+        for i = 1, #data do
+            assert.are.equal(data[i], s:readU8())
+        end
+        assert.are.equal(nil, s:readU8())
         s:close()
+    end)
+
+    describe("FileOutputStream", function()
+        it("works", function()
+            local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
+            local path = tmpname()
+
+            local s = FileOutputStream(path)
+
+            for i = 1, #data do
+                s:writeU8(data[i])
+            end
+            s:close()
+
+            local fh = io.open(path, "rb")
+            for i = 1, #data do
+                assert.are.equal(data[i], byte(fh:read(1)))
+            end
+            fh:close()
+        end)
+    end)
+
+    describe("BufferedInputStream", function()
+        it("works", function()
+            local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
+            local b = ByteArrayInputStream(data)
+            local s = BufferedInputStream(b)
+
+            for i = 1, #data do
+                assert.are.equal(data[i], s:readU8())
+            end
+            assert.are.equal(nil, s:readU8())
+
+            -- TODO: improve this test (write more..); we aren'</span>t really testing the actual buffering
+        <span class="keyword">end</span>)
     <span class="keyword">end</span>)
 
-    describe(<span class="string">"FileOutputStream"</span>, <span class="keyword">function</span>()
+    describe(<span class="string">"BufferedOutputStream"</span>, <span class="keyword">function</span>()
         it(<span class="string">"works"</span>, <span class="keyword">function</span>()
             <span class="keyword">local</span> data = { <span class="number">0</span>, <span class="number">1</span>, <span class="number">250</span>, <span class="number">170</span>, <span class="number">66</span>, <span class="number">92</span>, <span class="number">255</span>, <span class="number">42</span> }
-            <span class="keyword">local</span> path = tmpname()
-
-            <span class="keyword">local</span> s = FileOutputStream(path)
+            <span class="keyword">local</span> b = ByteArrayOutputStream()
+            <span class="keyword">local</span> s = BufferedOutputStream(b)
 
             <span class="keyword">for</span> i = <span class="number">1</span>, #data <span class="keyword">do</span>
                 s:writeU8(data[i])
             <span class="keyword">end</span>
-            s:close()
 
-            <span class="keyword">local</span> fh = <span class="global">io</span>.open(path, <span class="string">"rb"</span>)
+            <span class="global">print</span>(s.index)
+
+            <span class="global">assert</span>.are.equal(<span class="number">0</span>, #b:toByteArray())
+
+            s:flush()
+
+            <span class="keyword">local</span> xs = b:toByteArray()
+            <span class="global">assert</span>.are.equal(#data, #xs)
             <span class="keyword">for</span> i = <span class="number">1</span>, #data <span class="keyword">do</span>
-                <span class="global">assert</span>.are.equal(byte(fh:read(<span class="number">1</span>)), data[i])
+                <span class="global">assert</span>.are.equal(xs[i], data[i])
             <span class="keyword">end</span>
-            fh:close()
         <span class="keyword">end</span>)
     <span class="keyword">end</span>)
 <span class="keyword">end</span>)
@@ -227,7 +266,7 @@ describe("iostream.lua", function()
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2021-01-11 22:05:23 </i>
+<i style="float:right;">Last updated 2021-01-12 15:35:12 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

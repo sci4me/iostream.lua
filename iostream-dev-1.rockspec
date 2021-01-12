@@ -4,7 +4,7 @@ package = "iostream"
 version = "dev-1"
 
 source = {
-    url = "git://github.com/sci4me/iostream.git",
+    url = "git://github.com/sci4me/iostream.lua.git", 
     branch = "master"
 }
 
