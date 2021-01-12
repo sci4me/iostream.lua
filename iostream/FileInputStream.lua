@@ -1,4 +1,6 @@
---- @module FileInputStream
+--- An input stream that reads from a file.
+--
+-- @module FileInputStream
 -- @author sci4me
 -- @license MIT
 -- @copyright Scitoshi Nakayobro 2021

@@ -1,4 +1,6 @@
---- @module iostream
+---  A simple input/output stream framework based on `java.io`
+-- 
+-- @module iostream
 -- @author sci4me
 -- @license MIT
 -- @copyright Scitoshi Nakayobro 2021

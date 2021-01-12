@@ -64,9 +64,9 @@ describe("iostream.lua", function()
             local s = StringInputStream(str)
 
             for i = 1, strlen(str) do
-                assert.are.equal(s:readU8(), byte(substr(str, i, i)))
+                assert.are.equal(byte(substr(str, i, i)), s:readU8())
             end
-            assert.are.equal(s:readU8(), nil)
+            assert.are.equal(nil, s:readU8())
         end)
     end)
 
@@ -80,7 +80,7 @@ describe("iostream.lua", function()
                 s:writeU8(byte(substr(str, i, i)))
             end
 
-            assert.are.equal(s:toString(), str)
+            assert.are.equal(str, s:toString())
         end)
     end)
 
@@ -91,9 +91,9 @@ describe("iostream.lua", function()
             local s = ByteArrayInputStream(data)
 
             for i = 1, #data do
-                assert.are.equal(s:readU8(), data[i])
+                assert.are.equal(data[i], s:readU8())
             end
-            assert.are.equal(s:readU8(), nil)
+            assert.are.equal(nil, s:readU8())
         end)
     end)
 
@@ -108,9 +108,9 @@ describe("iostream.lua", function()
             end
 
             local r = s:toByteArray()
-            assert.are.equal(#r, #data)
+            assert.are.equal(#data, #r)
             for i = 1, #r do
-                assert.are.equal(r[i], data[i])
+                assert.are.equal(data[i], r[i])
             end
         end)
     end)
@@ -128,9 +128,9 @@ describe("iostream.lua", function()
         local s = FileInputStream(path)
 
         for i = 1, #data do
-            assert.are.equal(s:readU8(), data[i])
+            assert.are.equal(data[i], s:readU8())
         end
-        assert.are.equal(s:readU8(), nil)
+        assert.are.equal(nil, s:readU8())
         s:close()
     end)
 
@@ -148,9 +148,48 @@ describe("iostream.lua", function()
 
             local fh = io.open(path, "rb")
             for i = 1, #data do
-                assert.are.equal(byte(fh:read(1)), data[i])
+                assert.are.equal(data[i], byte(fh:read(1)))
             end
             fh:close()
+        end)
+    end)
+
+    describe("BufferedInputStream", function()
+        it("works", function()
+            local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
+            local b = ByteArrayInputStream(data)
+            local s = BufferedInputStream(b)
+
+            for i = 1, #data do
+                assert.are.equal(data[i], s:readU8())
+            end
+            assert.are.equal(nil, s:readU8())
+
+            -- TODO: improve this test (write more..); we aren't really testing the actual buffering
+        end)
+    end)
+
+    describe("BufferedOutputStream", function()
+        it("works", function()
+            local data = { 0, 1, 250, 170, 66, 92, 255, 42 }
+            local b = ByteArrayOutputStream()
+            local s = BufferedOutputStream(b)
+    
+            for i = 1, #data do
+                s:writeU8(data[i])
+            end
+
+            print(s.index)
+
+            assert.are.equal(0, #b:toByteArray())
+
+            s:flush()
+
+            local xs = b:toByteArray()
+            assert.are.equal(#data, #xs)
+            for i = 1, #data do
+                assert.are.equal(xs[i], data[i])
+            end
         end)
     end)
 end)

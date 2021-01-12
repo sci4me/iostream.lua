@@ -1,4 +1,6 @@
---- @module FileOutputStream
+--- An output stream that writes to a file.
+--
+-- @module FileOutputStream
 -- @author sci4me
 -- @license MIT
 -- @copyright Scitoshi Nakayobro 2021

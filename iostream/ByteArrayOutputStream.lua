@@ -1,4 +1,6 @@
---- @module ByteArrayOutputStream
+--- An output stream that writes to an array of bytes.
+--
+-- @module ByteArrayOutputStream
 -- @author sci4me
 -- @license MIT
 -- @copyright Scitoshi Nakayobro 2021

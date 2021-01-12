@@ -1,4 +1,6 @@
---- @module ByteArrayInputStream
+--- An input stream that reads from an array of bytes.
+--
+-- @module ByteArrayInputStream
 -- @author sci4me
 -- @license MIT
 -- @copyright Scitoshi Nakayobro 2021
