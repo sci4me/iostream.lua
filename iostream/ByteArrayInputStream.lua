@@ -9,6 +9,7 @@ function ByteArrayInputStream:initialize(array)
 end
 
 function ByteArrayInputStream:readU8()
+    if self.index > #self.array then return nil end
     local x = self.array[self.index]
     if type(x) ~= "number" then error("expected number, got " .. type(x)) end
     if x < 0 or x > 255 or (x % 1 ~= 0) then error("expected unsigned byte, got " .. tostring(x)) end

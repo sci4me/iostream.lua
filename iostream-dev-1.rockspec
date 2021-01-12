@@ -37,7 +37,8 @@ build = {
 
 test_dependencies = {
     "busted",
-    "busted-htest"
+    "busted-htest",
+    "luassert"
 }
 
 test = {

@@ -1,3 +1,4 @@
+local assert    = require "luassert"
 local char      = string.char
 local byte      = string.byte
 local substr    = string.sub
@@ -41,9 +42,9 @@ describe("iostream.lua", function()
             local s = StringInputStream(str)
 
             for i = 1, strlen(str) do
-                assert(s:readU8() == byte(substr(str, i, i)))
+                assert.are.equal(s:readU8(), byte(substr(str, i, i)))
             end
-            assert(s:readU8() == nil)
+            assert.are.equal(s:readU8(), nil)
         end)
     end)
 
@@ -56,7 +57,7 @@ describe("iostream.lua", function()
                 s:writeU8(byte(substr(str, i, i)))
             end
 
-            assert(s:toString() == str)
+            assert.are.equal(s:toString(), str)
         end)
     end)
 
@@ -67,8 +68,9 @@ describe("iostream.lua", function()
             local s = ByteArrayInputStream(data)
 
             for i = 1, #data do
-                assert(s:readU8() == data[i])
+                assert.are.equal(s:readU8(), data[i])
             end
+            assert.are.equal(s:readU8(), nil)
         end)
     end)
 
@@ -83,9 +85,9 @@ describe("iostream.lua", function()
             end
 
             local r = s:toByteArray()
-            assert(#r == #data)
+            assert.are.equal(#r, #data)
             for i = 1, #r do
-                assert(r[i] == data[i])
+                assert.are.equal(r[i], data[i])
             end
         end)
     end)
