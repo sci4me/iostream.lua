@@ -9,6 +9,7 @@ source = {
 }
 
 description = {
+    summary = "A simple input/output stream framework based on java.io",
     homepage = "https://github.com/sci4me/iostream.lua",
     issues_url = "https://github.com/sci4me/iostream.lua/issues",
     maintainer = "sci4me",
